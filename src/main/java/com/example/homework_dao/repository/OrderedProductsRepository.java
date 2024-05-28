@@ -1,8 +1,8 @@
-package com.example.homework_dao;
+package com.example.homework_dao.repository;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,13 +13,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@org.springframework.stereotype.Repository
-public class Repository {
-    @Autowired
+@Repository
+public class OrderedProductsRepository {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final String scriptFileName = "myScript.sql";
     private final String columnName = "product_name";
     private String script;
+
+    public OrderedProductsRepository(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        script = read(scriptFileName);
+    }
 
     private static String read(String scriptFileName) {
         try (InputStream is = new ClassPathResource(scriptFileName).getInputStream();
@@ -31,15 +35,8 @@ public class Repository {
     }
 
     public List<String> getProductName(String name) {
-        script = read(scriptFileName);
-
         Map<String, Object> params = new HashMap<>();
         params.put("name", name);
-        List<String> products = namedParameterJdbcTemplate.query(script + "'" + name + "'", params, (rs, rowNum) -> {
-            String product = rs.getString(columnName);
-            return product;
-        });
-
-        return products;
+        return namedParameterJdbcTemplate.queryForList(script + "'" + name + "'", params, String.class);
     }
 }
