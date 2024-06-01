@@ -1,5 +1,5 @@
-insert into customers_1 (name, surname, age, phone_number)
-values('Yury', 'Shakhmatov', 39, '+79999999999');
+insert into homework.customers_1 (id, name, surname, age, phone_number)
+values(nextval('hibernate_sequence'), 'Yury', 'Shakhmatov', 39, '+79999999999');
 
 insert into homework.customers_1 (name, surname, age, phone_number)
 values('Dmitry', 'Stepanov', 30, '+78888888888');
