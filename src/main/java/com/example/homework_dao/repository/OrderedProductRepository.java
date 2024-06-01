@@ -15,7 +15,6 @@ public class OrderedProductRepository {
 
     public List<String> getProductName(String name) {
         List<Order> orders = entityManager.createQuery("select o from Order o where lower(o.customer.name) = :name", Order.class).setParameter("name", name).getResultList();
-        System.out.println(orders);
         return orders.stream().map(Order::getProductName).collect(Collectors.toList());
     }
 }
