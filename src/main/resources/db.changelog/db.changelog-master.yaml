@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: migrations/customers.sql
+      relativeToChangeLogFile: true
+  - include:
+      file: migrations/orders.sql
+      relativeToChangeLogFile: true
